@@ -48,7 +48,7 @@ extern "C" FSHOOKS_API LRESULT HookProc(int code, WPARAM wParam, LPARAM lParam)
     {
     case WM_LBUTTONDOWN:
         g_log << "Received a WM_LBUTTONDOWN message with injected=" << injected << std::endl;
-        
+
         if (g_callback)
         {
             g_callback(g_numProcesses);
