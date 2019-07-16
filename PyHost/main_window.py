@@ -89,6 +89,19 @@ class MainPanel(wx.Panel):
         self.textbox.AppendText('Panel created on thread: {}\n'.format(
             threading.current_thread().ident))
 
+        # Get the hooks timeout value from the registry
+        from _winreg import *
+        registry = ConnectRegistry(None, HKEY_CURRENT_USER)
+        key = OpenKey(registry, r'Control Panel\Desktop')
+
+        try:
+            timeout = QueryValueEx(key, 'LowLevelHooksTimeout')
+            self.textbox.AppendText(
+                'Hooks timeout from registry is: {} milliseconds\n'.format(timeout))
+        except WindowsError:
+            self.textbox.AppendText(
+                'HKEY_CURRENT_USER\Control Panel\Desktop LowLevelHooksTimeout is not set\n')
+
     def callback_from_c(self, message_type, x, y, injected):
         self.textbox.AppendText(
             'Message: {} X: {} Y: {} Injected: {} Thread: {}\n'.format(
